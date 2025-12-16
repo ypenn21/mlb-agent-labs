@@ -116,16 +116,15 @@ Check your permissions:
 gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --filter="bindings.members:$(gcloud config get-value account)"
 ```
 
-#### 5. Check System Time
+#### 5. If there is error on adk deploy 
 
-Ensure your system clock is synchronized (OAuth tokens are time-sensitive):
+You may need to add permission on the artifact repo:
 
 ```bash
-# On macOS
-sudo sntp -sS time.apple.com
-
-# On Linux
-sudo ntpdate -s time.nist.gov
+gcloud artifacts repositories add-iam-policy-binding cloud-run-source-deploy \
+   --location=$REGION \
+--member="serviceAccount:${PROJECT_NUMBER}--compute@developer.gserviceaccount.com" \
+   --role="roles/artifactregistry.writer"
 ```
 
 ---
